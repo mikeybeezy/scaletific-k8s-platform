@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name:  grade-submission
+spec:
+  selector:
+     app.kubernetes.io/instance: grade-submission-portal
+  type:  LoadBalancer | ClusterIP | NodePort
+  ports:
+  - name:  grade-submission-svc
+    port:  80
+    targetPort:  8080
