@@ -1,34 +1,13 @@
+kind: Service
 apiVersion: v1
-kind: Pod
 metadata:
-  name: grade-submissiom-api
-  labels:
-    app.kubernetes.io/name: grade-submission
-    app.kubernetes.io/component: backend
-    app.kubernetes.io/instance: grade-submissiom-api
+  name:  grade-submission-portal
+  namespace: grade-submission
 spec:
-  containers:
-  - name: grade-submissiom-api
-    image: rslim087/kubernetes-course-grade-submission-api:stateless-v4
-    resources:
-      requests:
-        memory: "128Mi"
-        cpu: "128m"
-      limits:
-        memory: "128Mi"
-    ports:
-      - containerPort: 3000
-  - name: grade-submissiom-api-health-checker
-    image: rslim087/kubernetes-course-grade-submission-api-health-checker
-    resources:
-      requests:
-        memory: "128Mi"
-        cpu: "128m"
-      limits:
-        memory: "128Mi"
-
-
-
-
-
-       
+  selector:
+     app.kubernetes.io/instance: grade-submission-portal
+  type: NodePort
+  ports:
+  - port:  5001
+    targetPort:  5001
+    nodePort: 32000
