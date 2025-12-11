@@ -42,6 +42,18 @@ spec:
         - containerPort: 5001
       - name: grade-submission-portal-health-checker
         image: rslim087/kubernetes-course-grade-submission-portal-health-checker
+        livenessProbe:
+          httpGet:
+            path: /healthz  
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 5     
+        readinessProbe:
+          httpGet:
+            path: /readyz  
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5      
         resources:
           requests:
             cpu: "200m"
