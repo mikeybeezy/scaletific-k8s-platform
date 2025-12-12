@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
      app.kubernetes.io/instance: grade-submission-portal
-  type: NodePort
+  type: ClusterIP
   ports:
   - port:  5001
     targetPort:  5001

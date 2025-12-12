@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: grade-submission-api
-          image: rslim087/kubernetes-course-grade-submission-api:stateless-v2 #  v4 is standard v2 has been designed to intaract with a stateless DB # v3 hass bee designed for db assword access
+          image: rslim087/kubernetes-course-grade-submission-api:stateless-v2 #  v4 is standard v2 has been designed to intaract with a stateless DB # v3 has bee designed for db assword access
           livenessProbe:
             httpGet:
               path: /healthz  
@@ -40,11 +40,11 @@ spec:
               port: 3000
             initialDelaySeconds: 10
             periodSeconds: 5
-          env:
-            - name: MONGODB_HOST
-              value: mongodb
-            - name: MONGODB_PORT
-              value: '27017'
+          envFrom:
+            -  configMapRef:
+                  name: grade-submission-api-config
+            -  secretRef:
+                  name: grade-submission-api-secret
           resources:
             requests:
               cpu: "128m"
