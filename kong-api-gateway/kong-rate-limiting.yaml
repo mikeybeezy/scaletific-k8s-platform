@@ -1,0 +1,12 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+ name: grade-demo-ratelimit    # Must match name in Ingress annotation
+ namespace: grade-demo
+ annotations:
+  kubernetes.io/ingress.class: kong
+config:
+ minute: 5     # Number of requests allowed per minute
+ limit_by: consumer
+ policy: local
+plugin: rate-limiting
