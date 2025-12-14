@@ -20,6 +20,9 @@ spec:
       containers:
       - name: mongodb
         image: mongo:4.4
+        envFrom:
+          - secretRef:
+              name: mongodb-secret
         ports:
         - containerPort: 27017
           name: web
