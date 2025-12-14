@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: idp-kong-kong-consumers
+rules:
+- apiGroups: ["configuration.konghq.com"]
+  resources: ["kongconsumers"]
+  verbs: ["get","list","watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: idp-kong-kong-consumers
+subjects:
+- kind: ServiceAccount
+  name: idp-kong-kong
+  namespace: kong
+roleRef:
+  kind: ClusterRole
+  name: idp-kong-kong-consumers
+  apiGroup: rbac.authorization.k8s.io

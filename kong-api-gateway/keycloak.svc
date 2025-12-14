@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: keycloak
+    meta.helm.sh/release-namespace: keycloak
+  creationTimestamp: "2025-12-14T17:59:39Z"
+  labels:
+    app.kubernetes.io/component: keycloak
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: keycloak
+    app.kubernetes.io/version: 26.1.1
+    helm.sh/chart: keycloak-24.4.9
+  name: keycloak
+  namespace: keycloak
+  resourceVersion: "1119"
+  uid: c3b919fc-ae0d-421b-861d-ccf90aa3f21a
+spec:
+  clusterIP: 10.96.76.0
+  clusterIPs:
+  - 10.96.76.0
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    nodePort: 30080
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: keycloak
+    app.kubernetes.io/instance: keycloak
+    app.kubernetes.io/name: keycloak
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

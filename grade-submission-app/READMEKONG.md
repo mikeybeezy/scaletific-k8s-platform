@@ -106,7 +106,7 @@ curl -X POST http://localhost:<port>/grades \
 curl http://localhost:<port>/grades -H "apikey: your-secret-key"
 ```
 
-## Create 
+## Install Kong 
 
 Deploy Kong to map Kind cluster host port to Kong ingress
 helm install idp-kong kong/kong \
@@ -115,3 +115,32 @@ helm install idp-kong kong/kong \
   --set proxy.type=NodePort \
   --set proxy.http.nodePort=30080 \
   --set proxy.tls.nodePort=30443
+
+ ### Re-run Helm to upgrade the release: This allows us to create an overides file 
+ ### that we can then specify what namspace ingress can be deployed into and what
+ ### so that traffic can be routed to
+
+helm upgrade idp-kong kong/kong --namespace kong --values kong-values.yaml
+### should be run from the realtive path or the absoulte path 
+ 
+
+ helm upgrade idp-kong kong/kong --namespace monitoring  --values /Users/mikesablaze/Documents/relaunch/scaletific-k8s-platform/keycloak-sso-oidc/monitoring-helm/values.yaml
+ ###
+  This keeps the change versioned and future-proof—just add more namespaces to the list when you deploy new apps. If you don’t have the original values file, create this override and pass it to helm upgrade --install going forward.
+
+##
+
+K create namespace <for-kong-consumer-objects >
+- consumer
+- auth
+
+k apply <path-kong-manifest-files>
+
+
+## Install prometheus and grafana
+helm install prometheus prometheus/kube-prometheus-stack --version 45.7.1 --namespace monitoring --create-namespace -f monitoring-helm/values.yaml                  
+
+
+
+## install keycloak 
+ helm install keycloak bitnami/keycloak --version 24.4.9 -n keycloak --create-namespace -f keycloak-helm/values.yaml --set image.repository=bitnamilegacy/keycloak --set postgresql.image.repository=bitnamilegacy/postgresql --set global.security.allowInsecureImages=true

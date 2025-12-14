@@ -1,0 +1,8 @@
+ingressController:
+  watchNamespaces:
+    - grade-demo
+    - monitoring
+    - keycloak
+  rbac:
+    create: true
+    clusterRole: true   # ensure it creates the cluster-wide role
