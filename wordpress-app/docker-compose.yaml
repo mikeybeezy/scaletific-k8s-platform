@@ -1,0 +1,68 @@
+version: "3.1"
+
+
+#thes application comprise of threes servises 
+# mySQl DB service
+# phpmyadmin service
+# worpress
+
+# voluems are db data and wordpress data for images 
+# network is wpsite 
+services:
+  db:
+    image: mysql:8.0
+    volumes:
+      - 'db_data:/var/lib/mysql'
+    restart: always
+    environment: 
+       MYSQL_PASSWORD: wordpress
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_ROOT_PASSWORD: supersecret
+    networks:
+      - wpsite
+  wordpress:
+    depends_on:
+      - db # wordpress depens on the database paramerter being intalled 
+    image: wordpress:latest
+    ports:
+      - '8000:80' # we map port 8000 on our local host onto port 80 of our container 
+    restart: always # we have a conatiner restart policy of always 
+    volumes: 
+      - wordpress_data:/var/www/html  # we map or local directory to the directoy on the docker container 
+    env_file: .env
+    environment:  #envifronment variables fo our wordpress 
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD:  ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_DB_NAME:  ${WORDPRESS_DB_NAME}
+    networks:
+      - wpsite # shares the same network as the db
+  phomyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - '8081:80'
+    environment:
+      PMA_HOSTS: db
+      MYSQL_ROOT_PASSWORD: supersecret
+    networks:
+      - wpsite
+    
+networks:
+  wpsite:
+volumes:
+  db_data:
+  wordpress_data:
+
+
+# --name mysql \
+# --net wordpress \
+# -e MYSQL_DATABASE=exampledb \
+# -e MYSQL_USER=exampleuser \
+# -e MYSQL_PASSWORD=examplepassword \
+# -e MYSQL_RANDOM_ROOT_PASSWORD=1 \
+# -v ${PWD}/data:/var/lib/mysql \
+#  wordpress-mysqldb:1.3
